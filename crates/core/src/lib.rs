@@ -49,7 +49,7 @@ pub fn decode_solution(solution: &str) -> Result<(Token, Vec<u64>), Error> {
     if bytes.len() % 8 != 0 {
         return Err(Error::Malformed);
     }
-    let nonces = bytes.chunks_exact(8).map(|c| u64::from_be_bytes(c.try_into().unwrap())).collect();
+    let nonces = bytes.as_chunks::<8>().0.iter().map(|c| u64::from_be_bytes(*c)).collect();
     Ok((token, nonces))
 }
 

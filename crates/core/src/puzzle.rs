@@ -60,8 +60,8 @@ impl Hasher {
                 let mut state = SHA256_IV;
                 compress256(&mut state, std::slice::from_ref(block));
                 let mut out = [0u8; 32];
-                for (chunk, word) in out.chunks_exact_mut(4).zip(state) {
-                    chunk.copy_from_slice(&word.to_be_bytes());
+                for (chunk, word) in out.as_chunks_mut::<4>().0.iter_mut().zip(state) {
+                    *chunk = word.to_be_bytes();
                 }
                 out
             }
