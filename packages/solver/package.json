@@ -1,0 +1,22 @@
+{
+  "name": "@nextmoe/pow-solver",
+  "version": "0.1.0",
+  "description": "WebAssembly proof-of-work solver for nextmoe-pow challenges, run across Web Workers",
+  "license": "AGPL-3.0-only",
+  "repository": { "type": "git", "url": "https://github.com/next-moe/nextmoe-pow", "directory": "packages/solver" },
+  "type": "module",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+  },
+  "files": ["dist", "wasm/solver.js", "wasm/solver.d.ts", "wasm/solver_bg.wasm"],
+  "sideEffects": false,
+  "scripts": {
+    "build:wasm": "wasm-pack build ../../crates/wasm --release --target web --out-dir ../../packages/solver/wasm --out-name solver --no-pack",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,6 @@
+target
+node_modules
+dist
+/packages/solver/wasm
+/bench/results/*.local.json
+/packages/solver/wasm-simd
