@@ -1,0 +1,32 @@
+name: nextmoe_pow
+description: Proof-of-work bot check for Flutter, backed by the native Rust solver of nextmoe-pow.
+version: 0.1.0
+repository: https://github.com/next-moe/nextmoe-pow
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_rust_bridge: 2.13.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        ffiPlugin: true
+      ios:
+        ffiPlugin: true
+      linux:
+        ffiPlugin: true
+      macos:
+        ffiPlugin: true
+      windows:
+        ffiPlugin: true

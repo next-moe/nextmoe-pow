@@ -85,3 +85,48 @@ fn verify_cases() {
         }
     }
 }
+
+#[test]
+fn parallel_solutions_verify() {
+    use nextmoe_pow::{decode_solution, encode_solution, solve_parallel};
+    use std::sync::atomic::AtomicBool;
+    use std::sync::{Arc, Mutex};
+
+    let v = vectors();
+    for case in v["verify"].as_array().unwrap().iter().filter(|c| c["name"].as_str().unwrap().ends_with("/ok")) {
+        let (token, _) = decode_solution(case["solution"].as_str().unwrap()).unwrap();
+        let reports = Arc::new(Mutex::new(Vec::new()));
+        let sink = Arc::clone(&reports);
+        let nonces = solve_parallel(&token, 4, &AtomicBool::new(false), move |p| sink.lock().unwrap().push(p)).unwrap();
+        let scope =
+            Scope { site: case["site"].as_str().unwrap().into(), action: case["action"].as_str().unwrap().into() };
+        let solution = encode_solution(&token, &nonces);
+        assert!(verify(&[&key(&v, "a")], &solution, &scope, case["now"].as_u64().unwrap()).is_ok(), "{}", case["name"]);
+        let last = *reports.lock().unwrap().last().unwrap();
+        assert_eq!(last.solved, token.challenge.k, "{}", case["name"]);
+    }
+}
+
+#[test]
+fn parallel_solve_can_be_cancelled() {
+    use nextmoe_pow::solve_parallel;
+    use std::sync::atomic::AtomicBool;
+
+    let c = Challenge {
+        alg: Alg::Sha256,
+        k: 1,
+        difficulty: u32::MAX,
+        expires_at: 1,
+        salt: [0; 16],
+        scope: Scope { site: String::new(), action: String::new() },
+    };
+    let token = Token::parse(&c.sign(b"k").unwrap()).unwrap();
+    let cancel = AtomicBool::new(false);
+    let result = std::thread::scope(|s| {
+        let handle = s.spawn(|| solve_parallel(&token, 2, &cancel, |_| {}));
+        std::thread::sleep(std::time::Duration::from_millis(50));
+        cancel.store(true, std::sync::atomic::Ordering::Relaxed);
+        handle.join().unwrap()
+    });
+    assert_eq!(result, None);
+}

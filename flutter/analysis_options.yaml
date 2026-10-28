@@ -1,0 +1,10 @@
+analyzer:
+  exclude:
+    - lib/src/rust/**
+    - cargokit/**
+    - build/**
+    - android/**
+    - ios/**
+    - windows/**
+    - macos/**
+    - linux/**

@@ -1,0 +1,16 @@
+name: nextmoe_pow_example
+description: Demo and on-device benchmark for nextmoe_pow.
+publish_to: none
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  nextmoe_pow:
+    path: ..
+
+flutter:
+  uses-material-design: true
