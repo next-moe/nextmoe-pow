@@ -8,6 +8,7 @@ PoW raises the cost of automated requests; it does not prove a human is present.
 
 - Wire format and verification order: [docs/protocol.md](docs/protocol.md)
 - Algorithm benchmark (M0): [docs/m0-benchmark.md](docs/m0-benchmark.md)
+- Widget: [docs/widget.md](docs/widget.md)
 
 ## Packages
 
@@ -15,6 +16,7 @@ PoW raises the cost of automated requests; it does not prove a human is present.
 |---|---|
 | `crates/core` | Rust reference implementation: format, solver, verifier |
 | `crates/wasm` → `packages/solver` | `@nextmoe/pow-solver`: WASM solver and worker pool |
+| `packages/widget` | `@nextmoe/pow-widget`: the `<nextmoe-pow>` Web Component |
 | `go/` | `github.com/next-moe/nextmoe-pow/go`: issuer and verifier for Go servers |
 | `testdata/vectors.json` | shared test vectors; every implementation must pass them |
 
@@ -33,6 +35,14 @@ v, err := pow.VerifyOnce(ctx, store, [][]byte{key}, solution, scope, time.Now())
 `store` implements `Claim(ctx, key, ttl) (bool, error)`; with go-redis that is `rdb.SetNX(ctx, "pow:"+key, 1, ttl).Result()`. The parameters above are placeholders until M0 sets the defaults.
 
 ## Browser
+
+With the widget:
+
+```html
+<nextmoe-pow name="pow" challenge-url="/api/pow/challenge"></nextmoe-pow>
+```
+
+With the solver alone:
 
 ```ts
 import { createPool } from '@nextmoe/pow-solver'

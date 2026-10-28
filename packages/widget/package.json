@@ -1,0 +1,37 @@
+{
+  "name": "@nextmoe/pow-widget",
+  "version": "0.1.0",
+  "description": "<nextmoe-pow>: a framework-free Web Component for nextmoe-pow proof-of-work verification",
+  "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/next-moe/nextmoe-pow",
+    "directory": "packages/widget"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "./dist/index.js"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.ts",
+    "test:e2e": "node --test --test-concurrency=1 test/e2e/*.test.ts"
+  },
+  "dependencies": {
+    "@nextmoe/pow-solver": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "playwright": "^1.61.0"
+  }
+}

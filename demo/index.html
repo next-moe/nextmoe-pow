@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>nextmoe-pow demo</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "@nextmoe/pow-solver": "/packages/solver/dist/index.js",
+          "@nextmoe/pow-widget": "/packages/widget/dist/index.js"
+        }
+      }
+    </script>
+    <style>
+      :root { color-scheme: light dark; --bg: #fff; --fg: #18181b; --muted: #71717a; --line: #e4e4e7; --accent: #2563eb; }
+      @media (prefers-color-scheme: dark) { :root { --bg: #18181b; --fg: #f4f4f5; --muted: #a1a1aa; --line: #3f3f46; --accent: #60a5fa; } }
+      body { margin: 0; padding: 16px; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; }
+      main { max-width: 640px; margin: 0 auto; display: grid; gap: 24px; }
+      section { display: grid; gap: 12px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+      h1, h2 { margin: 0; }
+      h2 { font-size: 17px; }
+      form { display: grid; gap: 12px; }
+      input, select, button { font: inherit; }
+      input { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); }
+      button { justify-self: start; padding: 6px 14px; border: 1px solid var(--accent); border-radius: 6px; background: var(--accent); color: var(--bg); }
+      output { font-family: ui-monospace, monospace; font-size: 13px; color: var(--muted); white-space: pre-wrap; word-break: break-all; }
+      .themed {
+        --nextmoe-pow-background: #fdf2f8;
+        --nextmoe-pow-foreground: #831843;
+        --nextmoe-pow-muted: #be185d;
+        --nextmoe-pow-border: #f9a8d4;
+        --nextmoe-pow-track: #fce7f3;
+        --nextmoe-pow-accent: #db2777;
+        --nextmoe-pow-radius: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>nextmoe-pow</h1>
+      <label>Language <select id="lang"><option value="en">English</option><option value="zh">中文</option><option value="ja">日本語</option></select></label>
+
+      <section>
+        <h2>Form, auto mode</h2>
+        <form id="search">
+          <input name="q" value="moe" aria-label="Query" />
+          <nextmoe-pow name="nextmoe-pow" challenge-url="/api/challenge?alg=2&m=512&t=1&k=8&d=1000&site=demo&action=search"></nextmoe-pow>
+          <button>Search</button>
+          <button type="button" id="replay">Submit the same solution again</button>
+        </form>
+        <output id="search-result"></output>
+      </section>
+
+      <section>
+        <h2>Invisible mode</h2>
+        <nextmoe-pow id="invisible" mode="invisible" challenge-url="/api/challenge?alg=2&m=512&t=1&k=8&d=1000&site=demo&action=invisible"></nextmoe-pow>
+        <button type="button" id="run-invisible">Do the protected thing</button>
+        <output id="invisible-result"></output>
+      </section>
+
+      <section>
+        <h2>Themed with custom properties</h2>
+        <nextmoe-pow class="themed" challenge-url="/api/challenge?alg=2&m=512&t=1&k=8&d=1000&site=demo&action=themed"></nextmoe-pow>
+      </section>
+    </main>
+    <script type="module" src="./demo.js"></script>
+  </body>
+</html>

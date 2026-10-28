@@ -29,3 +29,4 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: scripts/check.sh
+      - run: scripts/e2e.sh
