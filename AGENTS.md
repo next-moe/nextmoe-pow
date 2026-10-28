@@ -36,11 +36,12 @@ Write the conclusion, not the mechanism. Never write restatements of the code, s
 crates/core       Rust reference: challenge format, solver, verifier, criterion benches, vector generator
 crates/wasm       wasm-bindgen bindings → packages/solver/wasm (build output, not committed)
 packages/solver   @nextmoe/pow-solver: worker pool that spreads sub-puzzles across Web Workers
-packages/widget   <nextmoe-pow> Web Component (M2)
+packages/widget   @nextmoe/pow-widget: <nextmoe-pow> Web Component (docs/widget.md)
 go/               github.com/next-moe/nextmoe-pow/go: Issue / Verify / VerifyOnce; cmd/powdemo is the dev server
+demo/             demo page for the widget, served by powdemo at /demo/
 bench/            browser benchmark page; results/ holds the raw reports
 testdata/         shared vectors
-docs/             protocol.md (wire format), m0-benchmark.md (measurements)
+docs/             protocol.md (wire format), m0-benchmark.md (measurements), widget.md
 ```
 
 ## Commands
@@ -50,7 +51,8 @@ cargo test && cargo clippy --all-targets -- -D warnings
 cargo bench -p nextmoe-pow
 (cd go && go vet ./... && go test ./... && go test -run '^$' -bench Verify)
 pnpm install && pnpm build:wasm && pnpm build && pnpm typecheck && pnpm test
-scripts/check.sh   # everything CI runs, including vector freshness and the WASM size budget
+scripts/check.sh   # vectors, WASM size budget, all unit tests
+scripts/e2e.sh     # widget end-to-end tests in system Chrome against powdemo (POW_BROWSER=firefox for Firefox)
 ```
 
 The Go module is imported by nextmoe-infra, so keep its `go` directive no newer than infra's toolchain and keep its dependencies to `golang.org/x/crypto`. Replay storage is an interface (`ReplayStore`) so the module does not pull in a Redis client.
