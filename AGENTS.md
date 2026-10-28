@@ -15,9 +15,10 @@ Everything in this repository is written in English: code, comments, docs, commi
 
 1. Keep each source file under ~500 lines where practical; past ~300 lines, consider splitting it.
 2. TypeScript: write every function as an arrow function.
-3. Balance modularity against necessary duplication case by case. The three implementations of the protocol are deliberate duplication, and the vectors keep them honest.
-4. Do not let elegance make code hard to follow, and do not write over-defensive code. The verifier trusts what its own key signed.
-5. After every change, check for side effects in the other two languages.
+3. Flutter library code uses the widgets layer only (no Material); the example app may use Material. `flutter/lib/src/rust/` and `flutter/rust/src/frb_generated.rs` are generated: rerun `flutter_rust_bridge_codegen generate` in `flutter/`, never hand-edit.
+4. Balance modularity against necessary duplication case by case. The three implementations of the protocol are deliberate duplication, and the vectors keep them honest.
+5. Do not let elegance make code hard to follow, and do not write over-defensive code. The verifier trusts what its own key signed.
+6. After every change, check for side effects in the other two languages.
 
 ## Comments
 
@@ -39,9 +40,10 @@ packages/solver   @nextmoe/pow-solver: worker pool that spreads sub-puzzles acro
 packages/widget   @nextmoe/pow-widget: <nextmoe-pow> Web Component (docs/widget.md)
 go/               github.com/next-moe/nextmoe-pow/go: Issue / Verify / VerifyOnce; cmd/powdemo is the dev server
 demo/             demo page for the widget, served by powdemo at /demo/
+flutter/          nextmoe_pow Flutter FFI plugin (flutter_rust_bridge + cargokit), example/ app (docs/flutter.md)
 bench/            browser benchmark page; results/ holds the raw reports
 testdata/         shared vectors
-docs/             protocol.md (wire format), m0-benchmark.md (measurements), widget.md
+docs/             protocol.md (wire format), m0-benchmark.md (measurements), widget.md, flutter.md
 ```
 
 ## Commands
@@ -53,6 +55,7 @@ cargo bench -p nextmoe-pow
 pnpm install && pnpm build:wasm && pnpm build && pnpm typecheck && pnpm test
 scripts/check.sh   # vectors, WASM size budget, all unit tests
 scripts/e2e.sh     # widget end-to-end tests in system Chrome against powdemo (POW_BROWSER=firefox for Firefox)
+scripts/flutter-check.sh   # Flutter analyze + tests, native solve verified by powdemo
 ```
 
 The Go module is imported by nextmoe-infra, so keep its `go` directive no newer than infra's toolchain and keep its dependencies to `golang.org/x/crypto`. Replay storage is an interface (`ReplayStore`) so the module does not pull in a Redis client.

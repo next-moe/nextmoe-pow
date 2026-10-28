@@ -1,9 +1,11 @@
 mod challenge;
+mod parallel;
 mod puzzle;
 
 use base64ct::{Base64UrlUnpadded, Encoding};
 
 pub use challenge::{Alg, Challenge, MAX_K, SALT_LEN, Scope, Token, VERSION};
+pub use parallel::{Progress, solve_parallel};
 pub use puzzle::{Hasher, meets, threshold};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
